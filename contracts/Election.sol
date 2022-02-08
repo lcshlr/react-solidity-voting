@@ -3,6 +3,9 @@ pragma solidity ^0.8.7;
 import "./Admin.sol";
 import "hardhat/console.sol";
 
+/**
+    The purpose of this contract is to implement a simple voting system
+ */
 contract Election is Admin {
     struct Candidate {
         string name;
@@ -13,6 +16,9 @@ contract Election is Admin {
 
     uint public nbCandidates;
 
+    /**
+        Check if a candidate id exist
+     */
     modifier candidateExists(uint _idCandidate) {
         bytes memory bytesName = bytes(candidates[_idCandidate].name);
         require(bytesName.length > 0, "Candidate id not exist");
