@@ -11,7 +11,6 @@ let owner, addrs;
     [owner, ...addrs] = await ethers.getSigners();
     election = await Election.deploy();
     await election.deployed();
-    await setSession(true);
   });
 
   async function vote(idCandidate, from=owner) {
@@ -35,6 +34,10 @@ let owner, addrs;
   }
 
   describe("Candidate", function () {
+    this.beforeEach(async function() {
+      await setSession(true);
+    });
+
     describe("Add candidate", function() {
       
       it("Should add candidate because admin", async function() {
@@ -74,6 +77,7 @@ let owner, addrs;
     this.beforeEach(async function() {
       await addCandidate("lucas");
       await addCandidate("test");
+      await setSession(true);
     });
 
     it("Should vote", async function() {
@@ -108,19 +112,23 @@ let owner, addrs;
     it("Should nbCandidate equal 0", async function() {
       expect(await election.nbCandidates()).to.equal(0);
     });
+
+    it("Should voting session is closed", async function() {
+      expect(await election.session()).to.equal(false);
+    });
   });
 
   describe("Session", function() {
-    it("Should set session to false", async function() {
-      await setSession(false);
+    it("Should set session to true", async function() {
+      await setSession(true);
     });
 
-    it("Should not set session to true : already in this status", async function() {
-      await expect(setSession(true)).to.be.revertedWith(getError("sessionStatus"));
+    it("Should not set session to false : already in this status", async function() {
+      await expect(setSession(false)).to.be.revertedWith(getError("sessionStatus"));
     });
 
     it("Should not set session : not admin", async function() {
-      await expect(setSession(false, addrs[0])).to.be.revertedWith(getError("notAdmin"));
+      await expect(setSession(true, addrs[0])).to.be.revertedWith(getError("notAdmin"));
     });
   });
 });
