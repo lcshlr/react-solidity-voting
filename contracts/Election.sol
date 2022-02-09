@@ -80,14 +80,12 @@ contract Election is Admin {
     /**
         Get final winner of the voting session
      */
-    function getWinner() public view votingFinished returns(Candidate memory) {
-        Candidate memory winner;
+    function getWinner() public view votingFinished returns(Candidate memory _winner) {
         for(uint i=0; i<nbCandidates; i++){
-            if(candidates[i].voteCount > winner.voteCount){
-                winner = candidates[i];
+            if(candidates[i].voteCount > _winner.voteCount){
+                _winner = candidates[i];
             }
         }
-        return winner;
     }
     /**
         Get final voting results for each candidate registered
