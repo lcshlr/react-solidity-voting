@@ -5,7 +5,10 @@ exports.getError = (key) => {
         'alreadyAdmin': 'Already admin',
         'candidateNotExist': 'Candidate id not exist',
         'correctAddress': 'Provide a correct address',
-        'notOwner': 'Ownable: caller is not the owner'
+        'notOwner': 'Ownable: caller is not the owner',
+        'alreadyVoted': 'Only one vote by voter',
+        'sessionClosed': 'Voting session not opened',
+        'sessionStatus': 'Session already in this status'
     };
     return `${REJECTED_ERROR} '${ERROR[key]}'`;
 }
