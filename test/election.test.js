@@ -69,7 +69,7 @@ let owner, addrs;
       });
     });
 
-    describe.only("Get all candidates", function() {
+    describe("Get all candidates", function() {
       it("Should return all candidate names", async function() {
         await addCandidate("lucas");
         await addCandidate("test");

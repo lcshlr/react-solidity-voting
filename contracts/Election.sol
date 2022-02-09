@@ -45,11 +45,6 @@ contract Election is Admin {
 
     function setSession(bool _status) external onlyAdmin {
         require(session != _status, "Session already in this status");
-        if(_status){
-            delete candidates;
-            delete voters;
-            nbCandidates = 0;
-        }
         session = _status;
     }
 
@@ -87,11 +82,9 @@ contract Election is Admin {
      */
     function getWinner() public view votingFinished returns(Candidate memory) {
         Candidate memory winner;
-        uint voteMax=0;
         for(uint i=0; i<nbCandidates; i++){
-            if(candidates[i].voteCount > voteMax){
+            if(candidates[i].voteCount > winner.voteCount){
                 winner = candidates[i];
-                voteMax = candidates[i].voteCount;
             }
         }
         return winner;
