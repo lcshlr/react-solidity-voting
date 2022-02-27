@@ -26,7 +26,7 @@ let owner, addrs;
   describe('Add admin', function() {
     it("Should add admin", async function() {
       await addAdmin(addrs[0].address);
-      expect(await admin.isAdmin(addrs[0].address)).to.be.true;
+      expect(await admin.isAdmin()).to.be.true;
     });
 
     it("Should not add admin: address already admin", async function() {
@@ -42,7 +42,7 @@ let owner, addrs;
   describe('Remove admin', function() {
     it("Should remove admin", async function() {
       await removeAdmin(owner.address);
-      expect(await admin.isAdmin(owner.address)).to.be.false;
+      expect(await admin.isAdmin()).to.be.false;
     });
 
     it("Should not remove admin: address not admin", async function() {
