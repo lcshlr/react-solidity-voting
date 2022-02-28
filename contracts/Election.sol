@@ -13,8 +13,8 @@ contract Election is Admin {
         uint256 voteCount;
     }
 
-    // Mapping candidate (candidate id => candidate object)
-    mapping(uint256 => Candidate) candidates;
+    // Array candidate
+    Candidate[] candidates;
     // Mapping voter (voter address => voted ? (true or false))
     mapping(address => bool) public voters;
 
@@ -28,8 +28,7 @@ contract Election is Admin {
         Check if a candidate id exist
      */
     modifier candidateExists(uint256 _candidateId) {
-        bytes memory bytesName = bytes(candidates[_candidateId].name);
-        require(bytesName.length > 0, "Candidate id not exist");
+        require(nbCandidates > _candidateId, "Candidate id not exist");
         _;
     }
 
@@ -57,7 +56,7 @@ contract Election is Admin {
     }
 
     function addCandidate(string memory _name) external onlyAdmin {
-        candidates[nbCandidates] = Candidate(_name, 0);
+        candidates.push(Candidate(_name, 0));
         emit AddCandidate(nbCandidates, _name);
         nbCandidates++;
     }
@@ -67,7 +66,8 @@ contract Election is Admin {
         onlyAdmin
         candidateExists(_candidateId)
     {
-        delete candidates[_candidateId];
+        candidates[_candidateId] = candidates[nbCandidates - 1];
+        candidates.pop();
         emit RemoveCandidate(_candidateId);
         nbCandidates--;
     }
