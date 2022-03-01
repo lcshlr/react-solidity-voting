@@ -21,8 +21,7 @@ contract Election is Admin {
     uint256 public nbCandidates;
     bool public session = false;
 
-    event AddCandidate(uint256 indexed id, string name);
-    event RemoveCandidate(uint256 indexed id);
+    event ChangeSessionStatus(address indexed _addresOf, bool _newStatus);
 
     /**
         Check if a candidate id exist
@@ -53,11 +52,11 @@ contract Election is Admin {
     function setSession(bool _status) external onlyAdmin {
         require(session != _status, "Session already in this status");
         session = _status;
+        emit ChangeSessionStatus(msg.sender, _status);
     }
 
     function addCandidate(string memory _name) external onlyAdmin {
         candidates.push(Candidate(_name, 0));
-        emit AddCandidate(nbCandidates, _name);
         nbCandidates++;
     }
 
@@ -68,7 +67,6 @@ contract Election is Admin {
     {
         candidates[_candidateId] = candidates[nbCandidates - 1];
         candidates.pop();
-        emit RemoveCandidate(_candidateId);
         nbCandidates--;
     }
 
