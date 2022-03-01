@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {web3Service} from '../../services/web3.service';
-import Admin from '../Admin';
-import Owner from '../Owner';
+import {web3Service} from '../services/web3.service';
+import Admin from '../components/Admin';
+import Owner from '../components/Owner';
 
 
 export default function Manage() {

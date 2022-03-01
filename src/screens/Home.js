@@ -1,4 +1,4 @@
-import ListCandidates from '../candidate/ListCandidates';
+import ListCandidates from '../components/candidate/ListCandidates';
 
 export default function Home() {
     return (
