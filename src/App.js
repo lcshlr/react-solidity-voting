@@ -1,34 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Link, BrowserRouter, Routes, Navigate   } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Manage from './components/Manage';
-import Home from './components/Home';
+import 'react-toastify/dist/ReactToastify.css';
+import Manage from './screens/Manage';
+import Home from './screens/Home';
+import Header from './components/Header';
 import {web3Service} from './services/web3.service';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { toastError } from './utils/HandleResponse';
 
 
 function App() {
+  
+  const [account, setAccount] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-  const [account, setAccount] = useState();
+  const [session, setSession] = useState(false);
+
+  function listenEvents() {
+    window.ethereum.on("accountsChanged", async([newAddress]) => {
+      setAccount(newAddress);
+      setIsAdmin(await web3Service.isAdmin());
+    });
+
+    web3Service.contract.on("ChangeSessionStatus", (_, newStatus) => {
+      setSession(newStatus);
+    });
+  }
 
   useEffect(() => {
     async function init(){
       try{
         await web3Service.initContract();
-        setIsAdmin(await web3Service.isAdmin())
+        listenEvents();
+        setIsAdmin(await web3Service.isAdmin());
+        setSession(await web3Service.getSession());
         setAccount(await web3Service.getAccountSelected());
       } 
       catch(err) {
-        toast.error('Error : cannot get the conctract', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          });
-        console.error(err);
+        toastError("Error : " + err);
       }
     }
     init();
@@ -43,7 +52,7 @@ function App() {
                 <li className='nav-item'>
                   <Link to={"/"} className="nav-link">Home</Link>
                 </li>
-                {isAdmin ? <li className="nav-item">
+                { isAdmin ? <li className="nav-item">
                   <Link to={"/manage"} className="nav-link">
                     Manage
                   </Link>
@@ -51,10 +60,9 @@ function App() {
               </div>
             </nav>
 
-            <div className="container mt-3">
-                    <h1>Voting system</h1>
-                    <p>Account selected : {account ?? 'N/A'}</p>
-                    <hr></hr>
+            <div className="container-fluid mt-3 px-3">
+                    <Header session={session} account={account}/>
+                    <hr/>
                     <Routes>
                         <Route  path="/" element={<Home />} />
                         <Route  path="/manage" element={isAdmin ? <Manage/> : <Navigate to='/'/> } />

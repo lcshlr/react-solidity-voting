@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import Election from '../artifacts/contracts/Election.sol/Election.json';
+import { toastError } from '../utils/HandleResponse';
 
 class Web3Service {
 
@@ -7,22 +8,58 @@ class Web3Service {
         return this.contract.isAdmin();
     }
 
-    async getAccountSelected(){
-        return this.signer.getAddress();
+    isBlockchainAddress(address) {
+        if(!address.startsWith('0x') || address.length !== 42){
+            throw new Error('Pleave give a correct address to add new administrator');
+        }
     }
 
-    getAllCandidates(){
+    async isOwner() {
+        return (await this.contract.owner()).toUpperCase() === (await this.getAccountSelected()).toUpperCase();
+    }
+
+    async transferOwnership(newOwner) {
+        return this.contract.designateNewOwner(newOwner);
+    }
+
+    async addAdmin(address) {
+        const addadmin = await this.contract.addAdmin(address);
+        await addadmin.wait();
+    }
+
+    async removeAdmin(address) {
+        const removeadmin = await this.contract.removeAdmin(address);
+        await removeadmin.wait();
+    }
+
+    getAllAdmins() {
+        return this.contract.getAllAdmins();
+    }
+
+    async getAccountSelected(){
+        return (await window.ethereum?.request({ method: 'eth_requestAccounts' }))[0] ?? 'N/A';
+    }
+
+    getAllCandidates() {
         return this.contract.getCandidates();
     }
 
     async addCandidate(name) {
-        const addadmin = await this.contract.addCandidate(name);
-        await addadmin.wait();
+        const addcandidate = await this.contract.addCandidate(name);
+        await addcandidate.wait();
     }
-
     async removeCandidate(id) {
         const removecandidate = await this.contract.removeCandidate(id);
         await removecandidate.wait();
+    }
+
+    async setSession(status) {
+        const setsession = await this.contract.setSession(status);
+        await setsession.wait();
+    }
+
+    async getSession() {
+        return this.contract.session();
     }
 
     async initContract(){

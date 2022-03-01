@@ -13,23 +13,21 @@ contract Election is Admin {
         uint256 voteCount;
     }
 
-    // Mapping candidate (candidate id => candidate object)
-    mapping(uint256 => Candidate) candidates;
+    // Array candidate
+    Candidate[] candidates;
     // Mapping voter (voter address => voted ? (true or false))
     mapping(address => bool) public voters;
 
     uint256 public nbCandidates;
     bool public session = false;
 
-    event AddCandidate(uint256 indexed id, string name);
-    event RemoveCandidate(uint256 indexed id);
+    event ChangeSessionStatus(address indexed _addresOf, bool _newStatus);
 
     /**
         Check if a candidate id exist
      */
     modifier candidateExists(uint256 _candidateId) {
-        bytes memory bytesName = bytes(candidates[_candidateId].name);
-        require(bytesName.length > 0, "Candidate id not exist");
+        require(nbCandidates > _candidateId, "Candidate id not exist");
         _;
     }
 
@@ -54,11 +52,11 @@ contract Election is Admin {
     function setSession(bool _status) external onlyAdmin {
         require(session != _status, "Session already in this status");
         session = _status;
+        emit ChangeSessionStatus(msg.sender, _status);
     }
 
     function addCandidate(string memory _name) external onlyAdmin {
-        candidates[nbCandidates] = Candidate(_name, 0);
-        emit AddCandidate(nbCandidates, _name);
+        candidates.push(Candidate(_name, 0));
         nbCandidates++;
     }
 
@@ -67,8 +65,8 @@ contract Election is Admin {
         onlyAdmin
         candidateExists(_candidateId)
     {
-        delete candidates[_candidateId];
-        emit RemoveCandidate(_candidateId);
+        candidates[_candidateId] = candidates[nbCandidates - 1];
+        candidates.pop();
         nbCandidates--;
     }
 

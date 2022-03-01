@@ -60,6 +60,21 @@ let owner, addrs;
         expect(await election.nbCandidates()).to.equal(0);
       });
 
+      it('Should remove only one candidate', async function() {
+          await addCandidate("lucas"); // id 0
+          await addCandidate("test"); // id 1
+          await addCandidate("solidity"); // id 2
+          await addCandidate("hardhat"); // id 3
+
+          // remove candidate named test
+          await removeCandidate(1);
+          expect(await election.nbCandidates()).to.equal(3);
+          const allCandidates = await election.getCandidates();
+          for(const name of ["lucas","solidity", "hardhat"]){
+            expect(allCandidates.find(rc => rc === name), `${name} not found`).to.be.not.undefined;
+          }
+      });
+
       it("Should not remove candidate because not admin", async function() {
         await expect(removeCandidate(0, addrs[0])).to.be.revertedWith(getError("notAdmin"));
       });
