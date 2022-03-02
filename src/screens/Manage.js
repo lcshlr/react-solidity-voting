@@ -4,7 +4,7 @@ import Admin from '../components/Admin';
 import Owner from '../components/Owner';
 
 
-export default function Manage() {
+export default function Manage(props) {
   const [owner, setOwner] = useState('');
 
   useEffect(() => {
@@ -17,9 +17,9 @@ export default function Manage() {
 
     return (
       <div>
-        <Admin/>
+        <Admin session={props.session}/>
       { owner &&
-        <Owner owner={owner}/>
+        <Owner setOwner={setOwner}/>
       }
       </div>
     );

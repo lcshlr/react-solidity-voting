@@ -7,15 +7,14 @@ export default function Owner(props) {
 
     const [ownerAddress, setOwnerAddress] = useState('');
     const [adminAddress, setAdminAddress] = useState('');
-    const [owner, setOwner] = useState({...props.owner});
+    const setOwner = props.setOwner;
     
     useEffect(() => {
         async function init() {
           await web3Service.initContract();
-          setOwner(props.owner);
         }
         init();
-    }, [props.owner]);
+    }, []);
   
     async function addAdmin(e) {
       e.preventDefault();

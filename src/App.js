@@ -65,7 +65,7 @@ function App() {
                     <hr/>
                     <Routes>
                         <Route  path="/" element={<Home />} />
-                        <Route  path="/manage" element={isAdmin ? <Manage/> : <Navigate to='/'/> } />
+                        <Route  path="/manage" element={isAdmin ? <Manage session={session}/> : <Navigate to='/'/> } />
                     </Routes>
             </div>
           </div>

@@ -3,7 +3,7 @@ import {web3Service} from '../services/web3.service';
 import { toastError, toastSuccess } from '../utils/HandleResponse';
 import ListCandidates from './candidate/ListCandidates';
 
-export default function Admin() {
+export default function Admin(props) {
 
     const [name, setName] = useState('');
     const [session, setSession] = useState(false);
@@ -14,7 +14,7 @@ export default function Admin() {
           setSession(await web3Service.getSession());
         }
         init();
-    }, []);
+    }, [props.session]);
   
     async function changeSessionStatus(status){
         try {

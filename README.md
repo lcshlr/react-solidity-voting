@@ -2,7 +2,9 @@
 
 ## React - Solidity - Hardhat - Metamask - Chai
 
-Idea of this project is to build a simple voting system with solidity contracts and implement a react UI to interact with theses contracts.
+Keywords : DApp, Web3, Ethereum, solidity, react, hardhat
+
+Idea of this project is to build a simple voting system web3 dapp with solidity contracts and implement a react UI to interact with theses contracts.
 
 ## Prerequisites :
 
