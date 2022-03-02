@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import Election from '../artifacts/contracts/Election.sol/Election.json';
-import { toastError } from '../utils/HandleResponse';
 
 class Web3Service {
 
