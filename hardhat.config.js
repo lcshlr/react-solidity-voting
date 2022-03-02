@@ -19,11 +19,16 @@ const ROPSTEN_PRIVATE_KEY = process.env.ROPSTEN_PRIVATE_KEY;
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
-module.exports = {
-  solidity: "0.8.7",
+let config = {
+    solidity: {
+    version: "0.8.7",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
+  },
   paths: {
     artifacts: './src/artifacts'
   },
@@ -31,9 +36,17 @@ module.exports = {
     hardhat: {
       chainId: 1337
     },
-    ropsten: {
-      url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
-      accounts: [`${ROPSTEN_PRIVATE_KEY}`]
-    }
   }
 };
+
+if(ALCHEMY_API_KEY && ROPSTEN_PRIVATE_KEY) {
+  config.networks.ropsten = {
+    url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+    accounts: [`${ROPSTEN_PRIVATE_KEY}`]
+  }
+}
+
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
+module.exports = config;
