@@ -50,3 +50,9 @@ npm run compile
 ```
 npx hardhat test
 ```
+
+or the following command to generate tests coverage :
+
+```
+npx hardhat coverage
+```
