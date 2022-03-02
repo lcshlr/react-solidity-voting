@@ -15,15 +15,12 @@ function App() {
   const [account, setAccount] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [session, setSession] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function listenEvents() {
     window.ethereum.on("accountsChanged", async([newAddress]) => {
       setAccount(newAddress);
       setIsAdmin(await web3Service.isAdmin());
-    });
-
-    window.ethereum.on("connect", async([newAddress]) => {
-      init();
     });
 
     web3Service.contract.on("ChangeSessionStatus", (_, newStatus) => {
@@ -33,6 +30,7 @@ function App() {
 
   async function init(){
     try{
+      setLoading(true);
       console.log('Try to initialize contract :', process.env.REACT_APP_CONTRACT_ADDRESS);
       await web3Service.initContract();
       listenEvents();
@@ -43,11 +41,26 @@ function App() {
     catch(err) {
       toastError("Error : " + err);
     }
+    finally{
+      setLoading(false);
+    }
+  }
+
+  async function connectMetamask(){
+    try{
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      init();
+    }
+    catch(err) {
+      toastError(err);
+    }
   }
 
   useEffect(() => {
-    init();
-  });
+    if(window.ethereum.selectedAddress){
+      init();
+    }
+  },[]);
 
 
     return (
@@ -65,14 +78,19 @@ function App() {
                 </li> : <div></div>}
               </div>
             </nav>
-
             <div className="container-fluid mt-3 px-3">
                     <Header session={session} account={account}/>
                     <hr/>
+                    { loading ? <div></div> :
+                     window.ethereum.selectedAddress ? 
                     <Routes>
                         <Route  path="/" element={<Home />} />
                         <Route  path="/manage" element={isAdmin ? <Manage session={session}/> : <Navigate to='/'/> } />
                     </Routes>
+                    : <div className="mt-4 row justify-content-center">
+                          <button onClick={connectMetamask} className='col-2 btn btn-primary btn-lg'>Connect to Metamask</button>
+                      </div>
+                    }
             </div>
           </div>
           <ToastContainer />

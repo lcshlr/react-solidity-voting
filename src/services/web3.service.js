@@ -70,7 +70,6 @@ class Web3Service {
             throw new Error('Unlock your metamask to access full features');
         };
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await window.ethereum.request({ method: 'eth_requestAccounts' })
         this.signer = provider.getSigner();
         this.contract = new ethers.Contract(contractAddress, Election.abi, this.signer);
     }
