@@ -6,13 +6,13 @@ function getHandledError(err){
         if(err.data.message.includes('Error: VM Exception while processing transaction: reverted with reason')){
             return err.data.message.split("'")[1];
         }
-        return err.data?.message ?? err;
+        return err.data?.message ?? err.toString();
     }
-    return err.message ?? err;
+    return err.message ?? err.toString();
 }
 
 export function toastError(err, position='top-right'){
-    toast.error('Error occured : ' + getHandledError(err), {
+    toast.error(getHandledError(err), {
         position: position,
         autoClose: 5000,
         hideProgressBar: false,

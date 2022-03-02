@@ -67,7 +67,11 @@ class Web3Service {
         if(typeof window.ethereum === 'undefined' || !contractAddress){
             throw new Error('Provider or Contract not found');
         }
+        if(!(await window.ethereum._metamask.isUnlocked())){
+            throw new Error('Unlock your metamask to access full features');
+        };
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await window.ethereum.request({ method: 'eth_requestAccounts' })
         this.signer = provider.getSigner();
         this.contract = new ethers.Contract(contractAddress, Election.abi, this.signer);
     }

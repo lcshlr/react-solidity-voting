@@ -22,24 +22,30 @@ function App() {
       setIsAdmin(await web3Service.isAdmin());
     });
 
+    window.ethereum.on("connect", async([newAddress]) => {
+      init();
+    });
+
     web3Service.contract.on("ChangeSessionStatus", (_, newStatus) => {
       setSession(newStatus);
     });
   }
 
-  useEffect(() => {
-    async function init(){
-      try{
-        await web3Service.initContract();
-        listenEvents();
-        setIsAdmin(await web3Service.isAdmin());
-        setSession(await web3Service.getSession());
-        setAccount(await web3Service.getAccountSelected());
-      } 
-      catch(err) {
-        toastError("Error : " + err);
-      }
+  async function init(){
+    try{
+      console.log('Try to initialize contract :', process.env.REACT_APP_CONTRACT_ADDRESS);
+      await web3Service.initContract();
+      listenEvents();
+      setIsAdmin(await web3Service.isAdmin());
+      setSession(await web3Service.getSession());
+      setAccount(await web3Service.getAccountSelected());
+    } 
+    catch(err) {
+      toastError("Error : " + err);
     }
+  }
+
+  useEffect(() => {
     init();
   }, []);
 
