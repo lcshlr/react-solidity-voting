@@ -102,16 +102,28 @@ contract Election is Admin {
         Get final winner of the voting session
      */
     function getWinner()
-        external
+        public
         view
         votingFinished
         returns (Candidate memory _winner)
     {
+        Candidate memory lastWinner;
         for (uint256 i = 0; i < nbCandidates; i++) {
-            if (candidates[i].voteCount > _winner.voteCount) {
+            if (
+                candidates[i].voteCount > 0 &&
+                candidates[i].voteCount >= _winner.voteCount
+            ) {
+                lastWinner = _winner;
                 _winner = candidates[i];
             }
         }
+
+        if (
+            _winner.voteCount > 0 && lastWinner.voteCount == _winner.voteCount
+        ) {
+            revert("Tie winner not allowed");
+        }
+        return _winner;
     }
 
     /**
