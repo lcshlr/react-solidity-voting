@@ -64,7 +64,7 @@ let owner, addrs;
           await addCandidate("lucas"); // id 0
           await addCandidate("test"); // id 1
           await addCandidate("solidity"); // id 2
-          await addCandidate("hardhatt"); // id 3
+          await addCandidate("hardhat"); // id 3
 
           // remove candidate named test
           await removeCandidate(1);
