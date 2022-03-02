@@ -60,7 +60,7 @@ function App() {
     if(window.ethereum.selectedAddress){
       init();
     }
-  });
+  },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     return (
