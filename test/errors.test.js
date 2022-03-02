@@ -11,7 +11,8 @@ exports.getError = (key) => {
         'sessionClosed': 'Voting session not opened',
         'sessionStatus': 'Session already in this status',
         'sessionNotClosed': 'The session have to be closed',
-        'owner': "Cannot remove contract owner from administrators, transfer ownership before"
+        'owner': "Cannot remove contract owner from administrators, transfer ownership before",
+        'noTieWinner': 'Tie winner not allowed'
     };
     return `${REJECTED_ERROR} '${ERROR[key]}'`;
 }

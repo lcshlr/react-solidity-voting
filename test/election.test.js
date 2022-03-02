@@ -162,15 +162,15 @@ let owner, addrs;
   describe("Final voting results", function() {
     describe("Get winner", function() {
       it("Should return winner", async function() {
-        // Adding two candidates: lucas and test
-        await addCandidate("lucas");
+        // Adding two candidates: test and lucas
         await addCandidate("test");
+        await addCandidate("lucas");
         // Open session to make vote possible
         await setSession(true);
         // 2 votes for lucas and 1 vote for test
-        await vote(0);
-        await vote(0, addrs[0]);
-        await vote(1, addrs[1]);
+        await vote(1);
+        await vote(1, addrs[0]);
+        await vote(0, addrs[1]);
         // Close session to get the winner
         await setSession(false);
         const winner = await election.getWinner();
@@ -180,6 +180,7 @@ let owner, addrs;
         expect(winner.name).to.equal("lucas");
         expect(winner.voteCount).to.equal(2);
       });
+
 
       it("Should not return winner: all candidates have 0 vote", async function() {
         // Adding two candidates: lucas and test
@@ -194,13 +195,35 @@ let owner, addrs;
 
       });
 
-      it("Should not return winner : session not closed", async function() {
+      it("Should fail : session not closed", async function() {
         await setSession(true);
         await expect(election.getWinner()).to.be.revertedWith(getError("sessionNotClosed"));
       });
 
-      it("Should not return winner : no candidates registered", async function() {
+      it("Should fail : no candidates registered", async function() {
         await expect(election.getWinner()).to.be.revertedWith(getError("noCandidate"));
+      });
+
+      it("Should fail : tie winner not allowed", async function() {
+        // Adding two candidates: test and lucas
+        await addCandidate("test");
+        await addCandidate("lucas");
+        await addCandidate("solidity");
+        // Open session to make vote possible
+        await setSession(true);
+        // 2 votes for lucas and 2 vote for test and 1 for solidity
+        await vote(1);
+        await vote(1, addrs[0]);
+        await vote(0, addrs[1]);
+        await vote(0, addrs[2]);
+        await vote(2, addrs[3]);
+        // Close session to get the winner
+        await setSession(false);
+        // Number vote lucas : 2
+        // Number vote test : 2
+        // Number vote solidity : 1
+        // Exception expected because lucas and test are tied
+        await expect(election.getWinner()).to.be.revertedWith(getError('noTieWinner'));
       });
     });
     
