@@ -57,7 +57,7 @@ function App() {
   }
 
   useEffect(() => {
-    if(window.ethereum.selectedAddress){
+    if(window?.ethereum?.selectedAddress){
       init();
     }
   },[]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -82,7 +82,7 @@ function App() {
                     <Header session={session} account={account}/>
                     <hr/>
                     { loading ? <div></div> :
-                     window.ethereum.selectedAddress ? 
+                     window?.ethereum?.selectedAddress ? 
                     <Routes>
                         <Route  path="/" element={<Home />} />
                         <Route  path="/manage" element={isAdmin ? <Manage session={session}/> : <Navigate to='/'/> } />
