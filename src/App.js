@@ -48,6 +48,7 @@ function App() {
 
   async function connectMetamask(){
     try{
+      await web3Service.isMetamask()
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       init();
     }

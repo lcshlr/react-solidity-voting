@@ -61,14 +61,18 @@ class Web3Service {
         return this.contract.session();
     }
 
-    async initContract(){
-        const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+    async isMetamask(contractAddress){
         if(typeof window.ethereum === 'undefined' || !contractAddress){
             throw new Error('Provider or Contract not found');
         }
         if(!(await window.ethereum._metamask.isUnlocked())){
             throw new Error('Unlock your metamask to access full features');
         };
+    }
+
+    async initContract(){
+        const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+        this.isMetamask(contractAddress);
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         this.signer = provider.getSigner();
         this.contract = new ethers.Contract(contractAddress, Election.abi, this.signer);
