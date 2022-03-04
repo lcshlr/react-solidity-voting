@@ -42,10 +42,10 @@ export default function Admin(props) {
 
     return (
         <div className='my-4 py-4 row'>
-        <div className='col-8'>
+        <div className='col-lg-8'>
         <h2 className='display-6'>Candidates</h2>
         <div className='row'>
-        <div className='col-4'>
+        <div className='col-lg-4'>
         <form onSubmit={addCandidate}>
 					<div className="form-group">
 						<label htmlFor="name">Add new candidate : </label>
@@ -67,12 +67,12 @@ export default function Admin(props) {
 					</button>
 				</form>
         </div>
-        <div className='col-8'>
+        <div className='col-lg-8 mt-4 mt-lg-0'>
         <ListCandidates isManage="true"/>
         </div>
         </div>
       </div>
-      <div className='col-4'>
+      <div className='col-lg-4 mt-4 mt-lg-0'>
         <h2 className='display-6'>Voting session</h2>
         { session ? <div>
         <button className='btn mt-2 btn-warning' onClick={() => changeSessionStatus(false)}>Finish session</button>

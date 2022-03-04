@@ -48,10 +48,10 @@ export default function Owner(props) {
         <div>
         <hr/>
       <div className='row my-4 py-4'>
-        <div className='col-8'>
+        <div className='col-lg-8'>
         <h2 className='display-6'>Administrators</h2>
         <div className='row'>
-        <div className='col-4'>
+        <div className='col-lg-4'>
         <form onSubmit={addAdmin}>
 					<div className="form-group">
 						<label htmlFor="name">Add new admin : </label>
@@ -73,12 +73,12 @@ export default function Owner(props) {
 					</button>
 				</form>
         </div>
-        <div className='col-8'>
+        <div className='col-lg-8 mt-4 mt-lg-0'>
         <ListAdministrator/>
         </div>
         </div>
         </div>
-        <div className='col-3'>
+        <div className='col-lg-3 mt-3 mt-lg-0'>
         <h2 className='display-6'>Owner</h2>
         <form onSubmit={transferOwnership}>
 					<div className="form-group">

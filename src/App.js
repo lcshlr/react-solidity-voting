@@ -15,7 +15,7 @@ function App() {
   const [account, setAccount] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [session, setSession] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isConnectMetaMask, setIsConnectMetaMask] = useState(true);
 
   function listenEvents() {
     window.ethereum.on("accountsChanged", async([newAddress]) => {
@@ -30,37 +30,32 @@ function App() {
 
   async function init(){
     try{
-      setLoading(true);
       console.log('Try to initialize contract :', process.env.REACT_APP_CONTRACT_ADDRESS);
       await web3Service.initContract();
       listenEvents();
       setIsAdmin(await web3Service.isAdmin());
-      setSession(await web3Service.getSession());
       setAccount(await web3Service.getAccountSelected());
+      setSession(await web3Service.getSession());
+      setIsConnectMetaMask(true);
     } 
     catch(err) {
-      toastError("Error : " + err);
-    }
-    finally{
-      setLoading(false);
+      if(err.toString().includes("unknown account")){
+        setIsConnectMetaMask(false);
+      }
+      else{
+        console.log(err);
+        toastError("Error : " + err);
+      }
     }
   }
 
-  async function connectMetamask(){
-    try{
-      await web3Service.isMetamask()
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      init();
-    }
-    catch(err) {
-      toastError(err);
-    }
+  async function connectMetaMask() {
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+    init();
   }
 
   useEffect(() => {
-    if(window?.ethereum?.selectedAddress){
       init();
-    }
   },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -82,16 +77,15 @@ function App() {
             <div className="container-fluid mt-3 px-3">
                     <Header session={session} account={account}/>
                     <hr/>
-                    { loading ? <div></div> :
-                     window?.ethereum?.selectedAddress ? 
+                    {!isConnectMetaMask ? 
+                            <div className="mt-4 row justify-content-center">
+                            <button onClick={connectMetaMask} className='col-2 btn btn-primary btn-lg'>Connect to Metamask</button>
+                        </div> :
                     <Routes>
                         <Route  path="/" element={<Home />} />
                         <Route  path="/manage" element={isAdmin ? <Manage session={session}/> : <Navigate to='/'/> } />
                     </Routes>
-                    : <div className="mt-4 row justify-content-center">
-                          <button onClick={connectMetamask} className='col-2 btn btn-primary btn-lg'>Connect to Metamask</button>
-                      </div>
-                    }
+                  }
             </div>
           </div>
           <ToastContainer />

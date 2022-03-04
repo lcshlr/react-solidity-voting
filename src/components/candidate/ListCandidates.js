@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { web3Service } from "../../services/web3.service";
+import { toastError } from "../../utils/HandleResponse";
 import RemoveCandidate from "./RemoveCandidate";
 
 export default function ListCandidates(props){
@@ -8,8 +9,12 @@ export default function ListCandidates(props){
 
 
     async function init() {
-      await web3Service.initContract();
-      setCandidates(await web3Service.getAllCandidates());
+      try{
+        await web3Service.initContract();
+        setCandidates(await web3Service.getAllCandidates());
+      } catch(err) {
+        toastError('Unable to fetch candidates');
+      }
     }
 
     useEffect(() => {

@@ -26,6 +26,12 @@ After each git push, react app is deployed to netlify.
 
 - Install Metamask on your browser and connect your hardhat accounts
 
+# Demo
+
+I deployed my contract to Ropsten and my react app with Netlify.
+
+Go to see my app : <https://gifted-franklin-66b547.netlify.app/>
+
 # Run the project
 
 ## Deploy contract on localhost
@@ -98,12 +104,6 @@ When your contract is deployed copy-paste the contract address in your environne
 ```
 npm start
 ```
-
-# Demo
-
-I deployed my contract to Ropsten and my react app with Netlify.
-
-Go to see my app : <https://gifted-franklin-66b547.netlify.app/>
 
 # Other commands
 
