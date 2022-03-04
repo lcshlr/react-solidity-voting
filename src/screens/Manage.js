@@ -3,9 +3,9 @@ import {web3Service} from '../services/web3.service';
 import Admin from '../components/Admin';
 import Owner from '../components/Owner';
 
-
 export default function Manage(props) {
   const [owner, setOwner] = useState('');
+  const setLoading = props.setLoading;
 
   useEffect(() => {
       async function init() {
@@ -17,9 +17,9 @@ export default function Manage(props) {
 
     return (
       <div>
-        <Admin session={props.session}/>
+        <Admin setLoading={setLoading}/>
       { owner &&
-        <Owner setOwner={setOwner}/>
+        <Owner setOwner={setOwner} setLoading={setLoading}/>
       }
       </div>
     );

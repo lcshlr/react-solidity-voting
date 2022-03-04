@@ -7,6 +7,7 @@ export default function Admin(props) {
 
     const [name, setName] = useState('');
     const [session, setSession] = useState(false);
+    const setLoading = props.setLoading;
 
     useEffect(() => {
         async function init() {
@@ -18,6 +19,7 @@ export default function Admin(props) {
   
     async function changeSessionStatus(status){
         try {
+          setLoading(true);
           await web3Service.setSession(status);
           const statusTxt = session ? "closed" : "opened";
           toastSuccess(`Session ${statusTxt} successfully`);
@@ -25,18 +27,25 @@ export default function Admin(props) {
         } catch(err) {
           toastError(err);
         }
+        finally{
+          setLoading(false);
+        }
       }
 
     async function addCandidate(e){
       console.log('try adding candidate', name);
       e.preventDefault();
       try{
+        setLoading(true);
         await web3Service.addCandidate(name);
         toastSuccess(name + ' added as candidate sucessfully');
         setName('');
       } catch(err) {
         console.error(err);
         toastError(err);
+      }
+      finally{
+        setLoading(false)
       }
     }
 

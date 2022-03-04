@@ -31,7 +31,7 @@ export default function ListCandidates(props){
         <div>
         <p>List of candidates : </p>
         <div className="row justify-content-left">
-            <div className="col-10">
+            <div className="col-lg-10">
               <table className='table table-sm'>
               <thead className='thead-dark'>
                 <tr>

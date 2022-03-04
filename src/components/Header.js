@@ -3,7 +3,7 @@ export default function Header(props) {
         <div className="row">
         <div className='col-lg-10'>
           <h1 className='display-4'>Voting system</h1>
-          <p className='lead'>Account selected : {props.account ?? 'N/A'}</p>
+          <p className='lead text-break'>Account selected : {props.account ?? 'N/A'}</p>
         </div>
         <div className='col-lg-2'>
         {props.session ? <div class="alert alert-success" role="alert">

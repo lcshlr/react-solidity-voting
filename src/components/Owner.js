@@ -8,6 +8,7 @@ export default function Owner(props) {
     const [ownerAddress, setOwnerAddress] = useState('');
     const [adminAddress, setAdminAddress] = useState('');
     const setOwner = props.setOwner;
+    const setLoading = props.setLoading;
     
     useEffect(() => {
         async function init() {
@@ -20,6 +21,7 @@ export default function Owner(props) {
       e.preventDefault();
       console.log('try adding new administrator', adminAddress);
       try {
+        setLoading(true);
         web3Service.isBlockchainAddress(adminAddress);
         await web3Service.addAdmin(adminAddress);
         setAdminAddress('');
@@ -27,12 +29,16 @@ export default function Owner(props) {
         console.error(err);
         toastError(err);
       }
+      finally{
+        setLoading(false);
+      }
     }
   
     async function transferOwnership(e){
       e.preventDefault();
       console.log('try transfering ownership to', ownerAddress);
       try{
+        setLoading(true);
         web3Service.isBlockchainAddress(ownerAddress);
         await web3Service.transferOwnership(ownerAddress);
         setOwner(false);
@@ -41,6 +47,9 @@ export default function Owner(props) {
       } catch(err) {
         console.error(err);
         toastError(err);
+      }
+      finally{
+        setLoading(false);
       }
     }
 
@@ -74,7 +83,7 @@ export default function Owner(props) {
 				</form>
         </div>
         <div className='col-lg-8 mt-4 mt-lg-0'>
-        <ListAdministrator/>
+        <ListAdministrator setLoading={setLoading}/>
         </div>
         </div>
         </div>
