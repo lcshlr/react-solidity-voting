@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getHandledError, toastError } from './HandleResponse';
+import { getHandledError } from './HandleResponse';
 
 export async function toastPromise(callback, pending, success){
     return toast.promise(
