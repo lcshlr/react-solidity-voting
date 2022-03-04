@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {web3Service} from '../services/web3.service';
-import { toastError, toastSuccess } from '../utils/HandleResponse';
+import { toastPromise } from '../utils/HandlePromiseTransaction';
+import { toastError } from '../utils/HandleResponse';
 import ListAdministrator from './administrators/ListAdministrator';
 
 export default function Owner(props) {
@@ -8,7 +9,6 @@ export default function Owner(props) {
     const [ownerAddress, setOwnerAddress] = useState('');
     const [adminAddress, setAdminAddress] = useState('');
     const setOwner = props.setOwner;
-    const setLoading = props.setLoading;
     
     useEffect(() => {
         async function init() {
@@ -21,36 +21,27 @@ export default function Owner(props) {
       e.preventDefault();
       console.log('try adding new administrator', adminAddress);
       try {
-        setLoading(true);
         web3Service.isBlockchainAddress(adminAddress);
-        await web3Service.addAdmin(adminAddress);
-        setAdminAddress('');
       } catch(err) {
-        console.error(err);
         toastError(err);
       }
-      finally{
-        setLoading(false);
-      }
+      toastPromise(web3Service.addAdmin(adminAddress), 'Adding admin awaiting validation', 'Admin added successfully')
+        .then(() => setAdminAddress(''));
     }
   
     async function transferOwnership(e){
       e.preventDefault();
       console.log('try transfering ownership to', ownerAddress);
       try{
-        setLoading(true);
         web3Service.isBlockchainAddress(ownerAddress);
-        await web3Service.transferOwnership(ownerAddress);
-        setOwner(false);
-        setOwnerAddress('')
-        toastSuccess('Ownership successfully transfered to '+ ownerAddress);
       } catch(err) {
-        console.error(err);
         toastError(err);
       }
-      finally{
-        setLoading(false);
-      }
+      web3Service.transferOwnership(ownerAddress, 'Transferring ownership awaiting validation', 'Ownership successfully transfered to '+ ownerAddress)
+        .then(() => {
+          setOwner(false);
+          setOwnerAddress('');
+        });
     }
 
     return (
@@ -83,7 +74,7 @@ export default function Owner(props) {
 				</form>
         </div>
         <div className='col-lg-8 mt-4 mt-lg-0'>
-        <ListAdministrator setLoading={setLoading}/>
+        <ListAdministrator/>
         </div>
         </div>
         </div>

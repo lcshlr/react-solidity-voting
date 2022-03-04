@@ -100,7 +100,7 @@ function App() {
                           </div> :
                       <Routes>
                           <Route  path="/" element={<Home />} />
-                          <Route  path="/manage" element={isAdmin ? <Manage setLoading={setLoading} session={session}/> : <Navigate to='/'/> } />
+                          <Route  path="/manage" element={isAdmin ? <Manage session={session}/> : <Navigate to='/'/> } />
                       </Routes>
                     }
               </div>

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {web3Service} from '../services/web3.service';
-import { toastError, toastSuccess } from '../utils/HandleResponse';
+import {toastPromise} from '../utils/HandlePromiseTransaction';
 import ListCandidates from './candidate/ListCandidates';
 
 export default function Admin(props) {
 
     const [name, setName] = useState('');
     const [session, setSession] = useState(false);
-    const setLoading = props.setLoading;
 
     useEffect(() => {
         async function init() {
@@ -17,36 +16,24 @@ export default function Admin(props) {
         init();
     }, [props.session]);
   
-    async function changeSessionStatus(status){
-        try {
-          setLoading(true);
-          await web3Service.setSession(status);
-          const statusTxt = session ? "closed" : "opened";
-          toastSuccess(`Session ${statusTxt} successfully`);
-          setSession(!session);
-        } catch(err) {
-          toastError(err);
-        }
-        finally{
-          setLoading(false);
-        }
+    function changeSessionStatus(status){
+      const statusTxt = session ? "closed" : "opened";
+      toastPromise(
+        web3Service.setSession(status),
+        'Set session awaiting validation',
+        `Session ${statusTxt} successfully`)
+        .then(() => setSession(!session));    
       }
 
-    async function addCandidate(e){
+    function addCandidate(e){
       console.log('try adding candidate', name);
       e.preventDefault();
-      try{
-        setLoading(true);
-        await web3Service.addCandidate(name);
-        toastSuccess(name + ' added as candidate sucessfully');
-        setName('');
-      } catch(err) {
-        console.error(err);
-        toastError(err);
-      }
-      finally{
-        setLoading(false)
-      }
+      toastPromise(
+        web3Service.addCandidate(name),
+        'Adding candidate awaiting validation',
+        name + ' added as candidate sucessfully'
+      )
+      .then(() => setName(''));
     }
 
     return (

@@ -1,14 +1,9 @@
 import { web3Service } from "../../services/web3.service";
-import { toastError } from "../../utils/HandleResponse";
+import { toastPromise } from "../../utils/HandlePromiseTransaction";
 
 export default function RemoveCandidate(props){
     async function removeCandidate() {
-        try{
-            await web3Service.removeCandidate(props.id);
-        } catch(err) {
-            console.error(err);
-            toastError(err);
-        }
+        toastPromise(web3Service.removeCandidate(props.id), 'Removing candidate awaiting validation', 'Candidate removed successfully');
     }
 
     return(
