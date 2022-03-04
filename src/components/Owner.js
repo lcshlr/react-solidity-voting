@@ -26,7 +26,8 @@ export default function Owner(props) {
         toastError(err);
       }
       toastPromise(web3Service.addAdmin(adminAddress), 'Adding admin awaiting validation', 'Admin added successfully')
-        .then(() => setAdminAddress(''));
+        .then(() => setAdminAddress(''))
+        .catch((err) => toastError(err));
     }
   
     async function transferOwnership(e){
@@ -36,12 +37,14 @@ export default function Owner(props) {
         web3Service.isBlockchainAddress(ownerAddress);
       } catch(err) {
         toastError(err);
+        return;
       }
-      web3Service.transferOwnership(ownerAddress, 'Transferring ownership awaiting validation', 'Ownership successfully transfered to '+ ownerAddress)
+      toastPromise(web3Service.transferOwnership(ownerAddress), 'Transferring ownership awaiting validation', 'Ownership successfully transfered to '+ ownerAddress)
         .then(() => {
           setOwner(false);
           setOwnerAddress('');
-        });
+        })
+        .catch((err) => toastError(err));
     }
 
     return (

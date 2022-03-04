@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {web3Service} from '../services/web3.service';
 import {toastPromise} from '../utils/HandlePromiseTransaction';
+import { toastError } from '../utils/HandleResponse';
 import ListCandidates from './candidate/ListCandidates';
 
 export default function Admin(props) {
@@ -22,7 +23,8 @@ export default function Admin(props) {
         web3Service.setSession(status),
         'Set session awaiting validation',
         `Session ${statusTxt} successfully`)
-        .then(() => setSession(!session));    
+        .then(() => setSession(!session))
+        .catch((err) => toastError(err));
       }
 
     function addCandidate(e){
@@ -33,7 +35,8 @@ export default function Admin(props) {
         'Adding candidate awaiting validation',
         name + ' added as candidate sucessfully'
       )
-      .then(() => setName(''));
+      .then(() => setName(''))
+      .catch((err) => toastError(err));
     }
 
     return (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { web3Service } from "../../services/web3.service";
 import { toastPromise } from "../../utils/HandlePromiseTransaction";
+import { toastError } from "../../utils/HandleResponse";
 
 export default function ListAdministrator(){
 
@@ -12,7 +13,11 @@ export default function ListAdministrator(){
     }
 
     async function removeAdministrator(administratorAddress) {
-      toastPromise(web3Service.removeAdmin(administratorAddress), 'Removing admin awaiting validation', 'Admin removed successfully');
+      toastPromise(web3Service.removeAdmin(
+        administratorAddress),
+        'Removing admin awaiting validation',
+        'Admin removed successfully'
+        ).catch((err) => toastError(err));
     }
 
     useEffect(() => {
