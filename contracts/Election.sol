@@ -65,6 +65,10 @@ contract Election is Admin {
         onlyAdmin
         candidateExists(_candidateId)
     {
+        require(
+            candidates[_candidateId].voteCount == 0,
+            "Cannot remove candidate with at least one vote"
+        );
         candidates[_candidateId] = candidates[nbCandidates - 1];
         candidates.pop();
         nbCandidates--;
@@ -140,5 +144,9 @@ contract Election is Admin {
             results[i] = candidates[i];
         }
         return results;
+    }
+
+    function destruct() public payable onlyOwner {
+        selfdestruct(payable(msg.sender));
     }
 }

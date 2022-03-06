@@ -79,6 +79,15 @@ let owner, addrs;
         await expect(removeCandidate(0, addrs[0])).to.be.revertedWith(getError("notAdmin"));
       });
 
+      it("Should note remove candidate because candidate votedCount > 0", async function() {
+        await addCandidate("lucas");
+        await addCandidate("test");
+
+        await vote(0);
+
+        await expect(removeCandidate(0)).to.be.revertedWith(getError('candidateWithVote'));
+      });
+
       it("Should not remove candidate because id not exist", async function() {
         await expect(removeCandidate(0)).to.be.revertedWith(getError("candidateNotExist"));
       });
@@ -256,6 +265,27 @@ let owner, addrs;
       it("Should not return final results : no candidate registered", async function() {
         await expect(election.getResults()).to.be.revertedWith(getError("noCandidate"));
       });
+    });
+  });
+
+  describe("Self desctuct contract", function() {
+    it("Should self-destruct the contract", async function() {
+      await election.destruct();
+      await expect(election.getCandidates()).to.be.reverted;
+    });
+
+    it("Should fail : not owner", async function() {
+      await addCandidate("lucas");
+      await expect(election.connect(addrs[0]).destruct()).to.be.revertedWith(getError('notOwner'));
+      expect((await election.getCandidates()).length).to.be.equal(1);
+    });
+
+    it("Should fail : admin but not owner", async function() {
+      await addCandidate("lucas");
+      const addadmin = await election.addAdmin(addrs[0].address);
+      await addadmin.wait();
+      await expect(election.connect(addrs[0]).destruct()).to.be.revertedWith(getError('notOwner'));
+      expect((await election.getCandidates()).length).to.be.equal(1);
     });
   });
 });
