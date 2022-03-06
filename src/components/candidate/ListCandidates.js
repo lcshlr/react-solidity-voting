@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { web3Service } from "../../services/web3.service";
 import { toastError } from "../../utils/HandleResponse";
+import Vote from "../Vote";
 import RemoveCandidate from "./RemoveCandidate";
 
 export default function ListCandidates(props){
 
     const [candidates, setCandidates] = useState([]);
-
 
     async function init() {
       try{
@@ -20,8 +20,6 @@ export default function ListCandidates(props){
     useEffect(() => {
       init();
     });
-
-    const isManage = props.isManage === 'true' ? true : false;
 
     if(candidates.length === 0){
       return <p>No candidate registered</p>;
@@ -37,11 +35,20 @@ export default function ListCandidates(props){
                 <tr>
                   <th scope="col">Id</th>
                   <th scope="col">Name</th>
-                  { isManage && <th></th> }
+                  { (props.isManage || props.isHome) && <th></th> }
                 </tr>
               </thead>
               <tbody>
-              { candidates.map((candidate, index) => <tr key={index}><th scope='row'>{index}</th><th>{candidate}</th>{isManage && <th><RemoveCandidate id={index} /></th>}</tr>) }
+                {
+                candidates.map((candidate, index) => (
+                  <tr key={index}>
+                    <th scope='row'>{index}</th>
+                    <th>{candidate}</th>
+                    {props.isManage && <th><RemoveCandidate id={index} /></th>}
+                    {props.isHome && !props.alreadyVoted && <th><Vote id={index} setVote={props.setVote}/></th>}
+                    </tr>
+                    ) 
+                )}
               </tbody>
               </table>
               </div>

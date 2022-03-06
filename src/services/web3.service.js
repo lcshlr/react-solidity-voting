@@ -43,6 +43,16 @@ class Web3Service {
         return this.contract.getCandidates();
     }
 
+    async alreadyVoted(){
+        const address = await this.getAccountSelected();
+        return this.contract.voters(address);
+    }
+
+    async vote(id){
+        const votePromise = await this.contract.vote(id);
+        await votePromise.wait();
+    }
+
     async addCandidate(name) {
         const addcandidate = await this.contract.addCandidate(name);
         await addcandidate.wait();

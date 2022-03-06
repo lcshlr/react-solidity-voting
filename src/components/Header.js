@@ -6,7 +6,7 @@ export default function Header(props) {
           <p className='lead text-break'>Account selected : {props.account ?? 'N/A'}</p>
         </div>
         <div className='col-lg-2'>
-        {props.session ? <div class="alert alert-success" role="alert">
+        {props.session ? <div className="alert alert-success" role="alert">
           <p className="lead">Voting session opened </p>
         </div> :
         <div className="alert alert-danger" role="alert">

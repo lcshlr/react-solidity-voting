@@ -67,7 +67,7 @@ export default function Admin(props) {
 				</form>
         </div>
         <div className='col-lg-8 mt-4 mt-lg-0'>
-        <ListCandidates isManage="true"/>
+        <ListCandidates isManage={true}/>
         </div>
         </div>
       </div>
