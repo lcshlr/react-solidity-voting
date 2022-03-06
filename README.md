@@ -10,7 +10,7 @@
 
 Last deploy:
 
-![](https://img.shields.io/netlify/b24290b8-ac4f-4fe8-9415-15adf78011cc)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b24290b8-ac4f-4fe8-9415-15adf78011cc/deploy-status)](https://app.netlify.com/sites/web3-voting-system/deploys)
 
 Icons from [simpleicons](https://simpleicons.org/)
 
@@ -30,7 +30,7 @@ After each git push, react app is deployed to netlify.
 
 I deployed my contract to Ropsten and my react app with Netlify.
 
-Go to see my app : <https://gifted-franklin-66b547.netlify.app/>
+Go to see my app : [web3-voting-system.netlify.app]()
 
 # Run the project
 
