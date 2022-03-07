@@ -30,7 +30,7 @@ After each git push, react app is deployed to netlify.
 
 I deployed my contract to Ropsten testnet and my React app with Netlify.
 
-Go to see and test my app : [web3-voting-system.netlify.app]()
+Go to see and test my app : [https://web3-voting-system.netlify.app](https://web3-voting-system.netlify.app)
 
 # Run the project
 
