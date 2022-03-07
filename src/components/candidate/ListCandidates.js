@@ -25,7 +25,6 @@ export default function ListCandidates(props){
           setCandidates(await web3Service.getAllCandidates());
         }
       } catch(err) {
-        console.error(err);
         toastError('Unable to fetch candidates');
       }
     }

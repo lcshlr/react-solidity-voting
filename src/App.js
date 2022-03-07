@@ -8,7 +8,7 @@ import Home from './screens/Home';
 import Header from './components/Header';
 import {web3Service} from './services/web3.service';
 import { ToastContainer } from 'react-toastify';
-import { toastError } from './utils/HandleResponse';
+import { getHandledError, toastError } from './utils/HandleResponse';
 import { useStateIfMounted } from 'use-state-if-mounted';
 
 
@@ -46,8 +46,10 @@ function App() {
       if(err.toString().includes("unknown account")){
         setIsConnectMetaMask(false);
       }
+      else if(err.message && err.message.includes("Metamask")){
+        toastError(getHandledError(err))
+      }
       else{
-        console.log(err);
         toastError("Error : connection to contract failed");
       }
     }

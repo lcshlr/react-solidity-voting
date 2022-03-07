@@ -94,7 +94,7 @@ class Web3Service {
             throw new Error('Please install Metamask extension to use the app');
         }
         if(!(await window.ethereum._metamask.isUnlocked())){
-            throw new Error('Unlock your metamask to access full features');
+            throw new Error('Unlock your Metamask to access full features');
         };
     }
 
