@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Link, BrowserRouter, Routes, Navigate   } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,15 +9,16 @@ import Header from './components/Header';
 import {web3Service} from './services/web3.service';
 import { ToastContainer } from 'react-toastify';
 import { toastError } from './utils/HandleResponse';
+import { useStateIfMounted } from 'use-state-if-mounted';
 
 
 function App() {
   
-  const [account, setAccount] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [session, setSession] = useState(false);
-  const [isConnectMetaMask, setIsConnectMetaMask] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [account, setAccount] = useStateIfMounted('');
+  const [isAdmin, setIsAdmin] = useStateIfMounted(false);
+  const [session, setSession] = useStateIfMounted(true);
+  const [isConnectMetaMask, setIsConnectMetaMask] = useStateIfMounted(true);
+  const [loading, setLoading] = useStateIfMounted(false);
 
   function listenEvents() {
     window.ethereum.on("accountsChanged", async([newAddress]) => {
@@ -47,7 +48,7 @@ function App() {
       }
       else{
         console.log(err);
-        toastError("Error : " + err);
+        toastError("Error : connection to contract failed");
       }
     }
     finally{
@@ -99,7 +100,7 @@ function App() {
                               <button onClick={connectMetaMask} className='col-lg-2 btn btn-primary btn-lg'>Connect to Metamask</button>
                           </div> :
                       <Routes>
-                          <Route  path="/" element={<Home />} />
+                          <Route  path="/" element={<Home session={session}/>} />
                           <Route  path="/manage" element={isAdmin ? <Manage session={session}/> : <Navigate to='/'/> } />
                       </Routes>
                     }

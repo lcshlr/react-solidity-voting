@@ -71,6 +71,21 @@ class Web3Service {
         return this.contract.session();
     }
 
+    async getResults(){
+        const results = await this.contract.getResults();
+        return results.map(candidate => {
+            return {name: candidate.name, voteCount: parseInt(candidate.voteCount)};
+        });
+    }
+
+    async getCandidateCount(){
+        return parseInt(await this.contract.nbCandidates());
+    }
+
+    getWinner() {
+        return this.contract.getWinner();
+    }
+
     async isMetamask(){
         if(!process.env.REACT_APP_CONTRACT_ADDRESS){
             throw new Error('Contract not found');

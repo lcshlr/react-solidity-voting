@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useStateIfMounted } from "use-state-if-mounted";
 import { web3Service } from "../../services/web3.service";
 import { toastPromise } from "../../utils/HandlePromiseTransaction";
 import { toastError } from "../../utils/HandleResponse";
 
 export default function ListAdministrator(){
 
-    const [administrators, setAdministrators] = useState([]);
+    const [administrators, setAdministrators] = useStateIfMounted([]);
 
     async function init() {
       await web3Service.initContract();
@@ -34,7 +35,7 @@ export default function ListAdministrator(){
         <div className="row justify-content-left">
             <div className="col-10">
               <ul className="list">
-              { administrators.map((administrator) => <li style={{cursor: "pointer"}} className="text-break" onClick={() => removeAdministrator(administrator)} key={administrator}>{administrator}</li>) }
+              { administrators.map((administrator) => <li style={{cursor: "pointer"}} title="Remove this administrator" className="text-break" onClick={() => removeAdministrator(administrator)} key={administrator}>{administrator}</li>) }
               </ul>
               </div>
               </div>

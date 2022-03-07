@@ -28,9 +28,9 @@ After each git push, react app is deployed to netlify.
 
 # Demo
 
-I deployed my contract to Ropsten and my react app with Netlify.
+I deployed my contract to Ropsten testnet and my React app with Netlify.
 
-Go to see my app : [web3-voting-system.netlify.app]()
+Go to see and test my app : [web3-voting-system.netlify.app]()
 
 # Run the project
 
@@ -94,7 +94,7 @@ npm install
 ### Deploy contract:
 
 ```
-npm run deploy
+npm run deploy-ropsten
 ```
 
 When your contract is deployed copy-paste the contract address in your environnement variable **REACT_APP_CONTRACT_ADDRESS** created above.

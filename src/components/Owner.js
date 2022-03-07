@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useStateIfMounted } from 'use-state-if-mounted';
 import {web3Service} from '../services/web3.service';
 import { toastPromise } from '../utils/HandlePromiseTransaction';
 import { toastError } from '../utils/HandleResponse';
@@ -6,8 +7,8 @@ import ListAdministrator from './administrators/ListAdministrator';
 
 export default function Owner(props) {
 
-    const [ownerAddress, setOwnerAddress] = useState('');
-    const [adminAddress, setAdminAddress] = useState('');
+    const [ownerAddress, setOwnerAddress] = useStateIfMounted('');
+    const [adminAddress, setAdminAddress] = useStateIfMounted('');
     const setOwner = props.setOwner;
     
     useEffect(() => {

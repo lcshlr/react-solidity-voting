@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useStateIfMounted } from 'use-state-if-mounted';
 import {web3Service} from '../services/web3.service';
 import {toastPromise} from '../utils/HandlePromiseTransaction';
 import { toastError } from '../utils/HandleResponse';
@@ -6,16 +7,17 @@ import ListCandidates from './candidate/ListCandidates';
 
 export default function Admin(props) {
 
-    const [name, setName] = useState('');
-    const [session, setSession] = useState(false);
+    const [name, setName] = useStateIfMounted('');
+    const [session, setSession] = useStateIfMounted(false);
+
+    async function init() {
+      await web3Service.initContract();
+      setSession(await web3Service.getSession());
+    }
 
     useEffect(() => {
-        async function init() {
-          await web3Service.initContract();
-          setSession(await web3Service.getSession());
-        }
         init();
-    }, [props.session]);
+    });
   
     function changeSessionStatus(status){
       const statusTxt = session ? "closed" : "opened";
