@@ -50,7 +50,7 @@ function App() {
         toastError(getHandledError(err))
       }
       else{
-        toastError("Error : connection to contract failed");
+        toastError("Error : connection to contract failed. Please ensure you are on the good network and the contract exists");
       }
     }
     finally{
@@ -71,7 +71,6 @@ function App() {
   useEffect(() => {
       init();
   },[]); // eslint-disable-line react-hooks/exhaustive-deps
-
 
     return (
           <BrowserRouter>
@@ -94,7 +93,7 @@ function App() {
                       { loading ? 
                           <div className='d-flex flex-column justify-content-center align-items-center mt-4 pt-4'>
                           <div className="loader">Loading...</div>
-                          <p className='leading'>Loading while waiting transaction be accepted....</p>
+                          <p className='leading'>Loading...</p>
                         </div>
                         :
                         !isConnectMetaMask ? 

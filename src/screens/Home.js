@@ -9,8 +9,12 @@ export default function Home(props) {
 
     useEffect(() => {
       async function init() {
-        await web3Service.initContract();
-        setAlreadyVoted(await web3Service.alreadyVoted());
+        try{
+          await web3Service.initContract();
+          setAlreadyVoted(await web3Service.alreadyVoted());
+        } catch{
+          
+        }
       }
       init();
     });

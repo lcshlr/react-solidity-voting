@@ -15,6 +15,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 const ROPSTEN_PRIVATE_KEY = process.env.ROPSTEN_PRIVATE_KEY;
+const NETWORK = process.env.NETWORK ?? 'localhost';
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -39,7 +40,7 @@ let config = {
   }
 };
 
-if(ALCHEMY_API_KEY && ROPSTEN_PRIVATE_KEY) {
+if(ALCHEMY_API_KEY && ROPSTEN_PRIVATE_KEY && NEWORK.toLowerCase() === 'ropsten') {
   config.networks.ropsten = {
     url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
     accounts: [`${ROPSTEN_PRIVATE_KEY}`]
